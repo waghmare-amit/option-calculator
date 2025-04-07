@@ -1,11 +1,12 @@
 import streamlit as st
 
-# Apply custom CSS styling for underline
+# Apply custom CSS styling for underline with normal weight
 st.markdown("""
     <style>
     .underline {
         text-decoration: underline;
-        font-weight: bold;
+        font-weight: normal;
+        text-decoration-thickness: 1px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -49,17 +50,17 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         risk_status = f"Your SL exceeds your risk limit by {round(actual_sl_points - max_sl_points, 2)} points."
 
     return {
-    "<span class='underline'>The Best Strike to Buy</span>": best_strike,
-    "Option Type": suggested_type,
-    "Expected Delta": delta,
-    "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
-    "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (in charts)",
-    "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in broker)",
-    "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker)",
-    "<span class='underline'>Estimated Loss</span>": f"₹{estimated_loss}",
-    "Estimated Profit in Premium": estimated_profit_premium,
-    "Risk Check": risk_status
-}
+        "<span class='underline'>The Best Strike to Buy</span>": best_strike,
+        "Option Type": suggested_type,
+        "Expected Delta": delta,
+        "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
+        "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (in charts)",
+        "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in broker)",
+        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker)",
+        "<span class='underline'>Estimated Loss</span>": f"₹{estimated_loss}",
+        "Estimated Profit in Premium": estimated_profit_premium,
+        "Risk Check": risk_status
+    }
 
 st.title("Option Strike Price Selector")
 
@@ -73,7 +74,7 @@ if st.button("Calculate Option"):
         st.markdown("### Suggested Option:")
         for key, value in suggestion.items():
             if 'underline' in key:
-                st.markdown(f"{key}: <span class='underline'>{value}</span>", unsafe_allow_html=True)
+                st.markdown(f"{key}: {value}", unsafe_allow_html=True)
             else:
                 st.markdown(f"{key}: {value}", unsafe_allow_html=True)
     else:
