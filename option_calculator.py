@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=75, max_premium=12000):
     delta_reference = {
         "Deep ITM": 0.8,
@@ -19,9 +20,10 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
     # Calculate max SL points that fit within risk
     max_sl_premium = max_risk / lot_size
     max_sl_points = round(max_sl_premium / delta, 2)
-    max_sl_points = min(max_sl_points, 30)  # Ensure SL points do not exceed 30
+    max_sl_points = min(max_sl_points, 30)
 
     sl_premium = round(max_sl_points * delta, 2)
+    sl_premium_from_input = round(actual_sl_points * delta, 2)
     estimated_loss = round(sl_premium * lot_size, 2)
 
     suggested_type = "ATM"
@@ -32,10 +34,6 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         suggested_type = "Slight ITM"
 
     estimated_profit_premium = round(spot_target_points * delta, 2)
-    estimated_profit = round(estimated_profit_premium * lot_size, 2)
-    risk_reward_ratio = round(estimated_profit / estimated_loss, 2) if estimated_loss > 0 else "N/A"
-
-    breakeven_move = round(sl_premium / delta, 2) if delta > 0 else "N/A"
 
     # Risk check status
     if actual_sl_points <= max_sl_points:
@@ -44,19 +42,18 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         risk_status = f"❌ Your SL exceeds your risk limit by {round(actual_sl_points - max_sl_points, 2)} points."
 
     return {
-        "Best Strike to Buy": best_strike,
+        "🔶 The Best Strike to Buy": best_strike,
         "Option Type": suggested_type,
         "Expected Delta": delta,
-        "Your SL in Charts": f"{actual_sl_points} (your input)",
-        "Max SL Points": f"{max_sl_points} (in charts)",
-        "Stop-Loss in Premium": f"{sl_premium} (in broker)",
-        "Estimated Loss (₹)": estimated_loss,
-        "Estimated Profit in Premium": estimated_profit_premium,
-        "Estimated Profit (₹)": estimated_profit,
-        "Risk:Reward Ratio": risk_reward_ratio,
-        "Breakeven Move (Points)": breakeven_move,
+        "🟡 SL in Charts": f"{actual_sl_points} (your input)",
+        "🟠 Max SL Points": f"{max_sl_points} (in charts)",
+        "🔴 SL in Premium": f"{sl_premium} (in broker)",
+        "🟣 SL in Premium Based on SL Input": f"{sl_premium_from_input} (in broker)",
+        "🔵 Estimated Loss": f"₹{estimated_loss}",
+        "🟢 Estimated Profit in Premium": estimated_profit_premium,
         "Risk Check": risk_status
     }
+
 
 # Streamlit UI
 st.title("Option Strike Price Selector")
@@ -70,6 +67,6 @@ if st.button("Calculate Option"):
         suggestion = suggest_option(market_spot, target_level, sl_level)
         st.write("### Suggested Option:")
         for key, value in suggestion.items():
-            st.write(f"**{key}:** {value}")
+            st.markdown(f"**<span style='background-color:#fff3cd'>{key}</span>:** {value}", unsafe_allow_html=True)
     else:
         st.error("Please enter valid values for all fields.")
