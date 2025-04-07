@@ -1,20 +1,24 @@
 import streamlit as st
 
-# Apply custom CSS styling for highlights
+# Apply custom CSS styling for underline
 st.markdown("""
     <style>
-    .highlight {
-        background-color: #fff3cd;
+    .underline {
+        text-decoration: underline;
+        font-weight: bold;
+    }
+    .green {
+        background-color: #d4edda;
         padding: 4px 8px;
         border-radius: 6px;
         font-weight: bold;
     }
-    .red { background-color: #f8d7da; }
-    .yellow { background-color: #fff3cd; }
-    .blue { background-color: #cce5ff; }
-    .green { background-color: #d4edda; }
-    .orange { background-color: #ffe5b4; }
-    .purple { background-color: #e2d5f8; }
+    .red {
+        background-color: #f8d7da;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -52,21 +56,21 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
     estimated_profit_premium = round(spot_target_points * delta, 2)
 
     if actual_sl_points <= max_sl_points:
-        risk_status = f"<span class='highlight green'>Risk Check: ✅</span> Your SL is within the risk limit."
+        risk_status = f"<span class='green'>Risk Check: ✅</span> Your SL is within the risk limit."
     else:
-        risk_status = f"<span class='highlight red'>Risk Check: ❌</span> Your SL exceeds your risk limit by {round(actual_sl_points - max_sl_points, 2)} points."
+        risk_status = f"<span class='red'>Risk Check: ❌</span> Your SL exceeds your risk limit by {round(actual_sl_points - max_sl_points, 2)} points."
 
     return {
-        "<span class='highlight yellow'>The Best Strike to Buy</span>": best_strike,
-        "<span class='highlight'>Option Type</span>": suggested_type,
-        "<span class='highlight'>Expected Delta</span>": delta,
-        "<span class='highlight orange'>SL in Charts</span>": f"{actual_sl_points} (your input)",
-        "<span class='highlight orange'>Max SL Points</span>": f"{max_sl_points} (in charts)",
-        "<span class='highlight red'>SL in Premium</span>": f"{sl_premium} (in broker)",
-        "<span class='highlight purple'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker)",
-        "<span class='highlight blue'>Estimated Loss</span>": f"₹{estimated_loss}",
-        "<span class='highlight green'>Estimated Profit in Premium</span>": estimated_profit_premium,
-        "<span class='highlight'>Risk Check</span>": risk_status
+        "<span class='underline'>The Best Strike to Buy</span>": best_strike,
+        "Option Type": suggested_type,
+        "Expected Delta": delta,
+        "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
+        "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (in charts)",
+        "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in broker)",
+        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker)",
+        "<span class='underline'>Estimated Loss</span>": f"₹{estimated_loss}",
+        "Estimated Profit in Premium": estimated_profit_premium,
+        "Risk Check": risk_status
     }
 
 st.title("Option Strike Price Selector")
@@ -80,6 +84,6 @@ if st.button("Calculate Option"):
         suggestion = suggest_option(market_spot, target_level, sl_level)
         st.markdown("### Suggested Option:")
         for key, value in suggestion.items():
-            st.markdown(f"{key}: <span class='highlight'>{value}</span>", unsafe_allow_html=True)
+            st.markdown(f"{key}: <span class='underline'>{value}</span>", unsafe_allow_html=True)
     else:
         st.error("Please enter valid values for all fields.")
