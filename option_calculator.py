@@ -6,7 +6,7 @@ st.markdown("""
     .underline {
         text-decoration: underline;
         font-weight: normal;
-        text-decoration-thickness: 1px;
+        text-decoration-thickness: 2.5px;
     }
     </style>
 """, unsafe_allow_html=True)
