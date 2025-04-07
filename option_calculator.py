@@ -7,18 +7,6 @@ st.markdown("""
         text-decoration: underline;
         font-weight: bold;
     }
-    .green {
-        background-color: #d4edda;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: bold;
-    }
-    .red {
-        background-color: #f8d7da;
-        padding: 4px 8px;
-        border-radius: 6px;
-        font-weight: bold;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -56,14 +44,12 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
     estimated_profit_premium = round(spot_target_points * delta, 2)
 
     if actual_sl_points <= max_sl_points:
-        risk_status = f"<span class='green'>Risk Check: ✅</span> Your SL is within the risk limit."
+        risk_status = f"Your SL is within the risk limit."
     else:
-        risk_status = f"<span class='red'>Risk Check: ❌</span> Your SL exceeds your risk limit by {round(actual_sl_points - max_sl_points, 2)} points."
+        risk_status = f"Your SL exceeds your risk limit by {round(actual_sl_points - max_sl_points, 2)} points."
 
     return {
         "<span class='underline'>The Best Strike to Buy</span>": best_strike,
-        "Option Type": suggested_type,
-        "Expected Delta": delta,
         "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
         "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (in charts)",
         "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in broker)",
@@ -84,6 +70,9 @@ if st.button("Calculate Option"):
         suggestion = suggest_option(market_spot, target_level, sl_level)
         st.markdown("### Suggested Option:")
         for key, value in suggestion.items():
-            st.markdown(f"{key}: <span class='underline'>{value}</span>", unsafe_allow_html=True)
+            if 'underline' in key:
+                st.markdown(f"{key}: <span class='underline'>{value}</span>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"{key}: {value}", unsafe_allow_html=True)
     else:
         st.error("Please enter valid values for all fields.")
