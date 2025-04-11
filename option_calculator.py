@@ -1,10 +1,14 @@
 import streamlit as st
 
-# Apply custom CSS styling for underline (non-bold)
+# Apply custom CSS styling
 st.markdown("""
     <style>
     .underline {
         text-decoration: underline;
+        font-weight: normal;
+    }
+    .no-underline {
+        text-decoration: none;
         font-weight: normal;
     }
     </style>
@@ -33,7 +37,6 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
     estimated_loss = round(sl_premium * lot_size, 2)
 
     sl_input_premium = round(actual_sl_points * delta, 2)
-    target_premium = round(spot_target_points * delta, 2)
 
     suggested_type = "ATM"
     estimated_itm_premium = 1.2 * best_strike
@@ -43,6 +46,7 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         suggested_type = "Slight ITM"
 
     estimated_profit_premium = round(spot_target_points * delta, 2)
+    estimated_profit_total = round(estimated_profit_premium * lot_size, 2)
 
     if actual_sl_points <= max_sl_points:
         risk_status = f"Your SL is within the risk limit."
@@ -53,13 +57,13 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         "<span class='underline'>The Best Strike to Buy</span>": best_strike,
         "Option Type": suggested_type,
         "Expected Delta": delta,
-        "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
-        "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (your input)",
-        "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in charts)",
-        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker)",
-        "<span class='underline'>Estimated Loss</span>": f"₹{estimated_loss}",
-        "Estimated Profit in Premium": estimated_profit_premium,
-        "<span class='underline'>Target in Premium</span>": f"{target_premium} (in broker)",
+        "<span class='underline'>SL in Charts</span>": f"<span class='no-underline'>{actual_sl_points}</span>",
+        "<span class='underline'>Max SL Points</span>": f"<span class='no-underline'>{max_sl_points}</span>",
+        "<span class='underline'>SL in Premium</span>": f"<span class='no-underline'>{sl_premium}</span>",
+        "<span class='underline'>SL in Premium Based on SL Input</span>": f"<span class='no-underline'>{sl_input_premium}</span>",
+        "<span class='underline'>Estimated Loss</span>": f"<span class='no-underline'>₹{estimated_loss}</span>",
+        "<span class='underline'>Estimated Profit in Premium</span>": f"<span class='no-underline'>{estimated_profit_premium}</span>",
+        "<span class='underline'>Estimated Profit (Total)</span>": f"<span class='no-underline'>₹{estimated_profit_total}</span>",
         "Risk Check": risk_status
     }
 
@@ -74,9 +78,6 @@ if st.button("Calculate Option"):
         suggestion = suggest_option(market_spot, target_level, sl_level)
         st.markdown("### Suggested Option:")
         for key, value in suggestion.items():
-            if 'underline' in key:
-                st.markdown(f"{key}: <span class='underline'>{value}</span>", unsafe_allow_html=True)
-            else:
-                st.markdown(f"{key}: {value}", unsafe_allow_html=True)
+            st.markdown(f"{key}: {value}", unsafe_allow_html=True)
     else:
         st.error("Please enter valid values for all fields.")
