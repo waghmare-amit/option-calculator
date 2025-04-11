@@ -1,12 +1,11 @@
 import streamlit as st
 
-# Apply custom CSS styling for underline with normal weight
+# Apply custom CSS styling for underline (non-bold)
 st.markdown("""
     <style>
     .underline {
         text-decoration: underline;
         font-weight: normal;
-        text-decoration-thickness: 2.5px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -34,6 +33,7 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
     estimated_loss = round(sl_premium * lot_size, 2)
 
     sl_input_premium = round(actual_sl_points * delta, 2)
+    target_premium = round(spot_target_points * delta, 2)
 
     suggested_type = "ATM"
     estimated_itm_premium = 1.2 * best_strike
@@ -53,12 +53,13 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         "<span class='underline'>The Best Strike to Buy</span>": best_strike,
         "Option Type": suggested_type,
         "Expected Delta": delta,
-        "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
-        "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (in charts)",
-        "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in broker)",
-        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker)",
+        "<span class='underline'>SL in Charts</span>": f"50.0",
+        "<span class='underline'>Max SL Points</span>": f"{max_sl_points}",
+        "<span class='underline'>SL in Premium</span>": f"{sl_premium}",
+        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium}",
         "<span class='underline'>Estimated Loss</span>": f"₹{estimated_loss}",
         "Estimated Profit in Premium": estimated_profit_premium,
+        "<span class='underline'>Target in Premium (Broker)</span>": f"{target_premium}",
         "Risk Check": risk_status
     }
 
@@ -74,7 +75,7 @@ if st.button("Calculate Option"):
         st.markdown("### Suggested Option:")
         for key, value in suggestion.items():
             if 'underline' in key:
-                st.markdown(f"{key}: {value}", unsafe_allow_html=True)
+                st.markdown(f"{key}: <span class='underline'>{value}</span>", unsafe_allow_html=True)
             else:
                 st.markdown(f"{key}: {value}", unsafe_allow_html=True)
     else:
