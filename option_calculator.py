@@ -53,13 +53,13 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         "<span class='underline'>The Best Strike to Buy</span>": best_strike,
         "Option Type": suggested_type,
         "Expected Delta": delta,
-        "<span class='underline'>SL in Charts</span>": f"50.0",
-        "<span class='underline'>Max SL Points</span>": f"{max_sl_points}",
-        "<span class='underline'>SL in Premium</span>": f"{sl_premium}",
-        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium}",
+        "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
+        "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (your input)",
+        "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in charts)",
+        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker)",
         "<span class='underline'>Estimated Loss</span>": f"₹{estimated_loss}",
         "Estimated Profit in Premium": estimated_profit_premium,
-        "<span class='underline'>Target in Premium (Broker)</span>": f"{target_premium}",
+        "<span class='underline'>Target in Premium</span>": f"{target_premium} (in broker)",
         "Risk Check": risk_status
     }
 
