@@ -52,12 +52,12 @@ def suggest_option(market_spot, target_level, sl_level, max_risk=1000, lot_size=
         "<span class='underline'>The Best Strike to Buy</span>": best_strike,
         "Option Type": suggested_type,
         "Expected Delta": delta,
-        "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your input)",
-        "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (in charts, according to AI calculation for max loss of ₹{max_risk})",
-        "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in broker, according to AI)",
-        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in broker, according to your input sl level)",
+        "<span class='underline'>SL in Charts</span>": f"{actual_sl_points} (your Input)",
+        "<span class='underline'>Max SL Points</span>": f"{max_sl_points} (in CHARTS, according to AI calculation for max loss of ₹{max_risk})",
+        "<span class='underline'>SL in Premium</span>": f"{sl_premium} (in BROKER, according to AI)",
+        "<span class='underline'>SL in Premium Based on SL Input</span>": f"{sl_input_premium} (in BROKER, according to your input SL level)",
         "<span class='underline'>Estimated Loss</span>": f"₹{estimated_loss}",
-        "Target Points in Broker": f"{estimated_profit_premium} (in broker, according to your input target level)",
+        "Target Points in Broker": f"{estimated_profit_premium} (in BROKER, according to your input Target level)",
         "<span class='underline'>Estimated Profit</span>": f"₹{estimated_profit_total}",
         "Risk Check": risk_status
     }
