@@ -50,7 +50,7 @@ def suggest_option(market_spot, target_level, sl_level, previous_trade=False, pr
         else:
             profit_target = 3000 - profit_loss
             if profit_target <= 0:
-                st.markdown("<h3 style='color:green; font-weight:bold;'>YOU DON'T HAVE TO TRADE ANYMORE, SINCE MAX PROFIT HAS BEEN ACHIEVED</h3>", unsafe_allow_html=True)
+                st.markdown("<h3 style='color:green; font-weight:bold;'>DON'T TRADE, MAX PROFIT FOR THE DAY HAS BEEN ACHIEVED</h3>", unsafe_allow_html=True)
                 return {}
             else:
                 target_premium_earned = round(profit_target / lot_size / delta, 2)
